@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Cherry
+  - Trap
+  - Checkpoint
+  - Enemy
+  - WeakPoint
+  - SpawnMaster
+  - Melon
+  - JumpPad
+  - Turtle
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Player
+  - Enemy
+  - Turtle
+  - MysteryBox
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: background
+    uniqueID: 1740855791
+    locked: 0
+  - name: Flags
+    uniqueID: 1132013721
+    locked: 0
+  - name: NPC
+    uniqueID: 4108681219
+    locked: 0
+  - name: Platform
+    uniqueID: 557627687
+    locked: 0
+  - name: Player
+    uniqueID: 363344769
+    locked: 0
+  - name: Pipes
+    uniqueID: 709456621
+    locked: 0
+  - name: terrain
+    uniqueID: 1017334331
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
