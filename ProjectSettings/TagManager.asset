@@ -13,6 +13,7 @@ TagManager:
   - Melon
   - JumpPad
   - Turtle
+  - MysteryBox
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Enemy
   - Turtle
   - MysteryBox
-  - 
+  - Fruit
   - 
   - 
   - 
@@ -59,8 +60,14 @@ TagManager:
   - name: Platform
     uniqueID: 557627687
     locked: 0
+  - name: Fruit
+    uniqueID: 3970567125
+    locked: 0
   - name: Player
     uniqueID: 363344769
+    locked: 0
+  - name: MysteryBox
+    uniqueID: 960130283
     locked: 0
   - name: Pipes
     uniqueID: 709456621

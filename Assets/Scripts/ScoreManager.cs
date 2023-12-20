@@ -49,6 +49,15 @@ public class ScoreManager : MonoBehaviour
     EnqueueFloatingText("+1UP", this.transform, 0.3f);
   }
 
+  public void AddStrawberries(int strawberries)
+  {
+    collectionSoundEffect.Play();
+    Scoring.totalMelons += strawberries;
+    int points = strawberries * 500;
+    AddScore(points);
+    EnqueueFloatingText("HP+", this.transform, 0.3f);
+  }
+
   public void AddKills(int kills)
   {
     Scoring.totalKills += kills;

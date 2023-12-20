@@ -3,37 +3,67 @@ using System.Collections;
 
 public class ItemCollector : MonoBehaviour
 {
-    [SerializeField] private AudioSource collectionSoundEffect;
-    [SerializeField] private AudioSource lifeSoundEffect;
+  [SerializeField] private AudioSource collectionSoundEffect;
+  [SerializeField] private AudioSource lifeSoundEffect;
 
-    private ScoreManager scoreManager;
+  private ScoreManager scoreManager;
 
-    private void Start()
+  private void Start()
+  {
+    scoreManager = FindObjectOfType<ScoreManager>();
+  }
+
+  private void OnTriggerEnter2D(Collider2D collision)
+  {
+    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon") || collision.gameObject.CompareTag("Strawberry"))
     {
-      scoreManager = FindObjectOfType<ScoreManager>();
-    }
+      TriggerCollectionAnimation(collision.gameObject);
+      collectionSoundEffect.Play();
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Cherry"))
+      if (collision.gameObject.CompareTag("Cherry"))
+      {
+        scoreManager.AddCherries(1);
+      }
+      else if (collision.gameObject.CompareTag("Melon"))
+      {
+        StartCoroutine(PlayLifeSoundAfterDelay(0.12f));
+        scoreManager.AddMelons(1);
+        LivesCounter.AddLife(1);
+      }
+      else if (collision.gameObject.CompareTag("Strawberry"))
+      {
+        TriggerCollectionAnimation(collision.gameObject);
+        collectionSoundEffect.Play();
+        scoreManager.AddStrawberries(1);
+        PlayerLife playerLife = collision.gameObject.GetComponent<PlayerLife>();
+        if (playerLife != null)
         {
-            collectionSoundEffect.Play();
-            collision.gameObject.SetActive(false);
-            scoreManager.AddCherries(1); 
+          playerLife.PowerUp();
         }
-        else if (collision.gameObject.CompareTag("Melon"))
-        {
-            collectionSoundEffect.Play();
-            StartCoroutine(PlayLifeSoundAfterDelay(0.12f));
-            collision.gameObject.SetActive(false);
-            scoreManager.AddMelons(1); 
-            LivesCounter.AddLife(1);
-        }
+      }
+      StartCoroutine(DeactivateAfterDelay(collision.gameObject, 1f));
     }
+  }
 
-    private IEnumerator PlayLifeSoundAfterDelay(float delay)
+  private IEnumerator DeactivateAfterDelay(GameObject gameObject, float delay)
+  {
+    yield return new WaitForSeconds(delay);
+    gameObject.SetActive(false);
+  }
+
+  private void TriggerCollectionAnimation(GameObject fruit)
+  {
+    Animator fruitAnimator = fruit.GetComponent<Animator>();
+    if (fruitAnimator != null)
     {
-        yield return new WaitForSeconds(delay);
-        lifeSoundEffect.Play();
+      fruitAnimator.SetTrigger("collected");
     }
+  }
+
+
+  private IEnumerator PlayLifeSoundAfterDelay(float delay)
+  {
+    yield return new WaitForSeconds(delay);
+    lifeSoundEffect.Play();
+  }
 }
