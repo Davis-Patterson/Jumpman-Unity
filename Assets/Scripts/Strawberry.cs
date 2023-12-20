@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Strawberry : MonoBehaviour
 {
-  [SerializeField] private float moveSpeed = 2f;
+  [SerializeField] private float moveSpeed = 5f;
   [SerializeField] private bool movesRight;
 
   private Rigidbody2D rb;
