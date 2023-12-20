@@ -14,7 +14,8 @@ public class PlayerLife : MonoBehaviour
   [SerializeField] private AudioSource spawnSoundEffect;
 
   [SerializeField] private LivesCounter livesCounter;
-  [SerializeField] private int HitPoints = 2;
+  [SerializeField] private int HitPoints = 1;
+  private bool isPoweredUp = false;
 
   private void Start()
   {
@@ -77,6 +78,16 @@ public class PlayerLife : MonoBehaviour
       rb.bodyType = RigidbodyType2D.Dynamic;
       spawnSoundEffect.Play();
       anim.SetTrigger("spawn");
+    }
+  }
+
+  public void PowerUp()
+  {
+    if (!isPoweredUp)
+    {
+      HitPoints = 2;
+      transform.localScale *= 1.33f;
+      isPoweredUp = true;
     }
   }
 }
