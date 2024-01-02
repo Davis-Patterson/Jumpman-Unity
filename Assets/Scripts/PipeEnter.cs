@@ -6,11 +6,13 @@ public class PipeEnter : MonoBehaviour
   [SerializeField] private Transform PointA;
   [SerializeField] private Transform PointB;
   [SerializeField] private Transform ExitPipe;
-  [SerializeField] private bool HorizontalPipe = false;
+
+  // Define the enumeration for enter direction
+  public enum Direction { Up, Down, Left, Right }
+  [SerializeField] private Direction EnterDirection;
 
   private Transform playerTransform;
   [SerializeField] private Collider2D tilemapCollider;
-
   [SerializeField] private AudioSource enterSound;
 
   private bool isEntering = false;
@@ -25,18 +27,7 @@ public class PipeEnter : MonoBehaviour
   {
     if (!isEntering && ExitPipe != null && other.CompareTag("Player"))
     {
-      bool enterPipe = false;
-
-      if (HorizontalPipe)
-      {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        enterPipe = Mathf.Abs(horizontalInput) > 0;
-      }
-      else
-      {
-        float verticalInput = Input.GetAxis("Vertical");
-        enterPipe = verticalInput < 0;
-      }
+      bool enterPipe = CheckEnterPipeCondition();
 
       if (enterPipe)
       {
@@ -48,6 +39,23 @@ public class PipeEnter : MonoBehaviour
     }
   }
 
+  private bool CheckEnterPipeCondition()
+  {
+    switch (EnterDirection)
+    {
+      case Direction.Up:
+        return Input.GetAxis("Vertical") > 0;
+      case Direction.Down:
+        return Input.GetAxis("Vertical") < 0;
+      case Direction.Left:
+        return Input.GetAxis("Horizontal") < 0;
+      case Direction.Right:
+        return Input.GetAxis("Horizontal") > 0;
+      default:
+        Debug.LogError("Invalid Enter Direction set in the Inspector!");
+        return false;
+    }
+  }
 
   private void Start()
   {
