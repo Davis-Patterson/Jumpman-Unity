@@ -8,14 +8,12 @@ public class BoxHit : MonoBehaviour
 
   [SerializeField] private AudioSource hitSound;
   [SerializeField] private AudioSource denySound;
-
   [SerializeField] private GameObject[] rewards;
   [SerializeField] private float spawnHeight = 2f;
-
   [SerializeField] private float spawnAnimationDuration = 1f;
-
-  public enum RewardType { Cherry, Melon }
+  public enum RewardType { Cherry, Melon, Strawberry }
   [SerializeField] private RewardType selectedRewardType;
+  [SerializeField] private bool rewardMovesRight = false;
 
   private Vector3 originalScale;
   private Vector3 originalPosition;
@@ -68,7 +66,17 @@ public class BoxHit : MonoBehaviour
     GameObject rewardPrefab = rewards[(int)selectedRewardType];
     Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.1f);
     GameObject spawnedReward = Instantiate(rewardPrefab, spawnPosition, Quaternion.identity);
-    StartCoroutine(SpawnAnimation(spawnedReward, spawnAnimationDuration));
+
+    IMovable movableReward = spawnedReward.GetComponent<IMovable>();
+    movableReward?.SetInitialDirection(rewardMovesRight);
+
+    Vector3 finalScale = Vector3.one;
+    if (selectedRewardType == RewardType.Strawberry)
+    {
+      finalScale *= 1.5f;
+    }
+
+    StartCoroutine(SpawnAnimation(spawnedReward, spawnAnimationDuration, finalScale));
   }
 
   private IEnumerator HitAnimation(bool isBoxEmpty)
@@ -88,11 +96,10 @@ public class BoxHit : MonoBehaviour
     yield return new WaitForSeconds(hitDuration / 2);
   }
 
-  private IEnumerator SpawnAnimation(GameObject reward, float duration)
+  private IEnumerator SpawnAnimation(GameObject reward, float duration, Vector3 finalScale)
   {
     float elapsedTime = 0;
     Vector3 startScale = new Vector3(0.7f, 0.7f, 0.7f);
-    Vector3 endScale = Vector3.one;
     Vector3 startPosition = reward.transform.position;
     Vector3 endPosition = startPosition + new Vector3(0, spawnHeight, 0);
 
@@ -102,13 +109,13 @@ public class BoxHit : MonoBehaviour
       t = t * t * t * (t * (6f * t - 15f) + 10f);
 
       reward.transform.position = Vector3.Lerp(startPosition, endPosition, t);
-      reward.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+      reward.transform.localScale = Vector3.Lerp(startScale, finalScale, t);
 
       elapsedTime += Time.deltaTime;
       yield return null;
     }
 
     reward.transform.position = endPosition;
-    reward.transform.localScale = endScale;
+    reward.transform.localScale = finalScale;
   }
 }

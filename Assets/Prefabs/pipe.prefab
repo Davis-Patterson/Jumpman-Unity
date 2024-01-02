@@ -491,8 +491,10 @@ MonoBehaviour:
   PointB: {fileID: 950393556242955990}
   ExitPipe: {fileID: 0}
   HorizontalPipe: 0
+  EnterDirection: Down
   tilemapCollider: {fileID: 5265836747175316434}
   enterSound: {fileID: 2106309188012636605}
+  pipeRigidbody: {fileID: 0}
 --- !u!114 &2237959099822918212
 MonoBehaviour:
   m_ObjectHideFlags: 0

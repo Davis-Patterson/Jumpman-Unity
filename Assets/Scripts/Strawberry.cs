@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Strawberry : MonoBehaviour
+public class Strawberry : MonoBehaviour, IMovable
 {
   [SerializeField] private float moveSpeed = 5f;
   [SerializeField] private bool movesRight;
@@ -21,6 +21,12 @@ public class Strawberry : MonoBehaviour
     rb.gravityScale = 0;
     moveDirection = movesRight ? 1f : -1f;
     StartCoroutine(EnableMovementAfterDelay(1f));
+  }
+
+  public void SetInitialDirection(bool movesRight)
+  {
+    this.movesRight = movesRight;
+    moveDirection = movesRight ? 1f : -1f;
   }
 
   private IEnumerator EnableMovementAfterDelay(float delay)
