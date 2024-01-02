@@ -6,47 +6,66 @@ public class PipeEnter : MonoBehaviour
   [SerializeField] private Transform PointA;
   [SerializeField] private Transform PointB;
   [SerializeField] private Transform ExitPipe;
-  [SerializeField] private string EnterDirection = "Down";
-  [SerializeField] private AudioSource enterSound;
+  [SerializeField] private bool HorizontalPipe = false;
 
   private Transform playerTransform;
-  private bool isEntering = false;
+  [SerializeField] private Collider2D tilemapCollider;
 
-  private void Start()
+  [SerializeField] private AudioSource enterSound;
+
+  private bool isEntering = false;
+  private Coroutine enterCoroutine;
+
+  private void Awake()
   {
     playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
   }
 
   private void OnTriggerStay2D(Collider2D other)
   {
-    if (!isEntering && ExitPipe != null && other.CompareTag("Player") && CheckEnterPipeCondition())
+    if (!isEntering && ExitPipe != null && other.CompareTag("Player"))
     {
-      enterSound?.Play();
-      StartCoroutine(Enter(other.transform));
+      bool enterPipe = false;
+
+      if (HorizontalPipe)
+      {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        enterPipe = Mathf.Abs(horizontalInput) > 0;
+      }
+      else
+      {
+        float verticalInput = Input.GetAxis("Vertical");
+        enterPipe = verticalInput < 0;
+      }
+
+      if (enterPipe)
+      {
+        enterSound.Play();
+        playerTransform.position = ExitPipe.GetComponent<PipeExit>().PointB.position;
+        if (enterCoroutine != null) StopCoroutine(enterCoroutine);
+        enterCoroutine = StartCoroutine(Enter(other.transform));
+      }
     }
   }
 
-  private bool CheckEnterPipeCondition()
+
+  private void Start()
   {
-    switch (EnterDirection.ToLower())
-    {
-      case "down": return Input.GetAxis("Vertical") < 0;
-      case "up": return Input.GetAxis("Vertical") > 0;
-      case "left": return Input.GetAxis("Horizontal") < 0;
-      case "right": return Input.GetAxis("Horizontal") > 0;
-      default:
-        Debug.LogError("Invalid Enter Direction set in the Inspector!");
-        return false;
-    }
+    playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
   }
 
   private IEnumerator Enter(Transform player)
   {
     isEntering = true;
     DisablePlayerComponents(player);
+    ResetPlayerMovementState(player);
+
+    tilemapCollider.enabled = false;
 
     Vector3 enteredPosition = PointA.position;
     Vector3 targetPosition = PointB.position;
+    Vector3 enteredScale = Vector3.one * 0.5f;
+
     float duration = 1f;
     float elapsed = 0f;
 
@@ -54,39 +73,43 @@ public class PipeEnter : MonoBehaviour
     {
       float t = elapsed / duration;
       player.position = Vector3.Lerp(enteredPosition, targetPosition, t);
-      player.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 0.5f, t);
+      player.localScale = Vector3.Lerp(Vector3.one, enteredScale, t);
+
       elapsed += Time.deltaTime;
       yield return null;
     }
 
     ExitPipe.GetComponent<PipeExit>().StartExitAnimation(player);
+
     yield return new WaitForSeconds(1f);
 
     isEntering = false;
-    EnablePlayerComponents(player);
+
+    tilemapCollider.enabled = true;
+
+    player.GetComponent<PlayerMovement>().enabled = true;
   }
 
   private void DisablePlayerComponents(Transform player)
   {
-    var playerMovement = player.GetComponent<PlayerMovement>();
-    var playerCollider = player.GetComponent<Collider2D>();
-    var playerRigidbody = player.GetComponent<Rigidbody2D>();
-
-    playerMovement.enabled = false;
-    playerCollider.enabled = false;
+    player.GetComponent<PlayerMovement>().enabled = false;
+    player.GetComponent<Collider2D>().enabled = false;
+    player.GetComponent<Rigidbody2D>().isKinematic = true;
   }
 
   private void EnablePlayerComponents(Transform player)
   {
-    var playerMovement = player.GetComponent<PlayerMovement>();
-    var playerCollider = player.GetComponent<Collider2D>();
-    var playerRigidbody = player.GetComponent<Rigidbody2D>();
+    player.GetComponent<PlayerMovement>().enabled = true;
+    player.GetComponent<Collider2D>().enabled = true;
+    player.GetComponent<Rigidbody2D>().isKinematic = false;
+  }
 
-    playerMovement.enabled = true;
-    playerCollider.enabled = true;
-    if (playerRigidbody != null)
+  private void ResetPlayerMovementState(Transform player)
+  {
+    var playerMovement = player.GetComponent<PlayerMovement>();
+    if (playerMovement != null)
     {
-      playerRigidbody.isKinematic = false;
+      playerMovement.ResetState();
     }
   }
 }

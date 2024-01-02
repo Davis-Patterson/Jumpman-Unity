@@ -15,6 +15,7 @@ TagManager:
   - Turtle
   - MysteryBox
   - Strawberry
+  - PlayerEnteringPipe
   layers:
   - Default
   - TransparentFX
