@@ -15,8 +15,7 @@ public class ItemCollector : MonoBehaviour
 
   private void OnTriggerEnter2D(Collider2D collision)
   {
-    Debug.Log("collision");
-    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon"))
+    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon") || collision.gameObject.CompareTag("Strawberry"))
     {
       TriggerCollectionAnimation(collision.gameObject);
       collectionSoundEffect.Play();
@@ -31,22 +30,16 @@ public class ItemCollector : MonoBehaviour
         scoreManager.AddMelons(1);
         LivesCounter.AddLife(1);
       }
-      StartCoroutine(DeactivateAfterDelay(collision.gameObject, 1f));
-    }
-  }
-
-  private void OnCollisionEnter2D(Collision2D collision)
-  {
-    Debug.Log("collision");
-    if (collision.gameObject.CompareTag("Strawberry"))
-    {
-      TriggerCollectionAnimation(collision.gameObject);
-      collectionSoundEffect.Play();
-      scoreManager.AddStrawberries(1);
-      PlayerLife playerLife = collision.gameObject.GetComponent<PlayerLife>();
-      if (playerLife != null)
+      else if (collision.gameObject.CompareTag("Strawberry"))
       {
-        playerLife.PowerUp();
+        TriggerCollectionAnimation(collision.gameObject);
+        collectionSoundEffect.Play();
+        scoreManager.AddStrawberries(1);
+        PlayerLife playerLife = collision.gameObject.GetComponent<PlayerLife>();
+        if (playerLife != null)
+        {
+          playerLife.PowerUp();
+        }
       }
       StartCoroutine(DeactivateAfterDelay(collision.gameObject, 1f));
     }
@@ -66,6 +59,7 @@ public class ItemCollector : MonoBehaviour
       fruitAnimator.SetTrigger("collected");
     }
   }
+
 
   private IEnumerator PlayLifeSoundAfterDelay(float delay)
   {
