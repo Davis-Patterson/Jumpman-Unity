@@ -185,7 +185,7 @@ MonoBehaviour:
   spawnHeight: 2
   spawnAnimationDuration: 0.8
   selectedRewardType: 0
-  rewardMovesRight: 0
+  rewardMovesRight: 1
 --- !u!82 &3858192864848108050
 AudioSource:
   m_ObjectHideFlags: 0

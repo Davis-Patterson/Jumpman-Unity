@@ -77,7 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -186286077
-  m_SortingLayer: -2
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: -1409377701681601660, guid: d2de0d5d65de6fe4c819bae5f4e4c117, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6fdffbe3d9110041bde6794f4db1e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 10
+  bounceForce: 14
   animationDelay: 0.4
   stompSoundEffect: {fileID: 6522816231082465535}
   requiredHits: 1

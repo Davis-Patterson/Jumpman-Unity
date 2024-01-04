@@ -108,7 +108,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -186286077
-  m_SortingLayer: -2
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: -3906221422484359612, guid: 35d33412cf90ccf4f9e1b5100ba41640, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -234,6 +234,7 @@ MonoBehaviour:
   pointA: {fileID: 1462641731720483511}
   pointB: {fileID: 6395129051924227960}
   speed: 0.8
+  hitSpeed: 1.5
   pause: 1
   pauseDuration: 2.4
   towardsB: 0
@@ -324,8 +325,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3600962919508315187}
   - component: {fileID: 3370280521869798650}
-  - component: {fileID: 2053412618979492227}
   - component: {fileID: 903835011873221740}
+  - component: {fileID: 2820927831840802142}
   m_Layer: 8
   m_Name: WeakPoint
   m_TagString: WeakPoint
@@ -396,22 +397,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &2053412618979492227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459620895916557907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6fdffbe3d9110041bde6794f4db1e32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bounceForce: 10
-  animationDelay: 0.4
-  stompSoundEffect: {fileID: 903835011873221740}
-  requiredHits: 1
 --- !u!82 &903835011873221740
 AudioSource:
   m_ObjectHideFlags: 0
@@ -508,3 +493,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2820927831840802142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459620895916557907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f3a7abd3a3f5642b97705d3efd1813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceForce: 12
+  animationDelay: 0.4
+  stompSoundEffect: {fileID: 903835011873221740}
+  requiredHits: 2

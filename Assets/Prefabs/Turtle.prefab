@@ -108,7 +108,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -186286077
-  m_SortingLayer: -2
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 465714023092435484, guid: 81599edd816625a4394b87c55bc6d552, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transitionTime: 2
   animationDelay: 0.4
-  bounceForce: 10
+  bounceForce: 18
   stompSoundEffect: {fileID: 2800047185511186855}
 --- !u!82 &2800047185511186855
 AudioSource:

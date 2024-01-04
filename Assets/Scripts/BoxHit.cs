@@ -66,6 +66,11 @@ public class BoxHit : MonoBehaviour
     GameObject rewardPrefab = rewards[(int)selectedRewardType];
     Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.1f);
     GameObject spawnedReward = Instantiate(rewardPrefab, spawnPosition, Quaternion.identity);
+    Collider2D rewardCollider = spawnedReward.GetComponent<Collider2D>();
+    if (rewardCollider != null)
+    {
+      rewardCollider.enabled = false;
+    }
 
     IMovable movableReward = spawnedReward.GetComponent<IMovable>();
     movableReward?.SetInitialDirection(rewardMovesRight);
@@ -77,6 +82,7 @@ public class BoxHit : MonoBehaviour
     }
 
     StartCoroutine(SpawnAnimation(spawnedReward, spawnAnimationDuration, finalScale));
+    StartCoroutine(EnableColliderAfterAnimation(rewardCollider, spawnAnimationDuration));
   }
 
   private IEnumerator HitAnimation(bool isBoxEmpty)
@@ -117,5 +123,14 @@ public class BoxHit : MonoBehaviour
 
     reward.transform.position = endPosition;
     reward.transform.localScale = finalScale;
+  }
+
+  private IEnumerator EnableColliderAfterAnimation(Collider2D collider, float delay)
+  {
+    yield return new WaitForSeconds(delay);
+    if (collider != null)
+    {
+      collider.enabled = true;
+    }
   }
 }

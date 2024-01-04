@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyStomp : MonoBehaviour
 {
-  [SerializeField] private float bounceForce = 10f;
+  [SerializeField] private float bounceForce = 14f;
   private Animator npcAnimator;
   [SerializeField] private float animationDelay = .4f;
   [SerializeField] private AudioSource stompSoundEffect;

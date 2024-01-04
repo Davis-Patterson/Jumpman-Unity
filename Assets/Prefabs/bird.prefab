@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6fdffbe3d9110041bde6794f4db1e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 10
+  bounceForce: 14
   animationDelay: 0.4
   stompSoundEffect: {fileID: 6364464880805871129}
   requiredHits: 1
@@ -370,7 +370,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -186286077
-  m_SortingLayer: -2
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 6570920502705930198, guid: 9f8778d0d44049a459735824f24042e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
