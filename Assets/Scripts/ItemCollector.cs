@@ -35,7 +35,8 @@ public class ItemCollector : MonoBehaviour
         TriggerCollectionAnimation(collision.gameObject);
         collectionSoundEffect.Play();
         scoreManager.AddStrawberries(1);
-        PlayerLife playerLife = collision.gameObject.GetComponent<PlayerLife>();
+
+        PlayerLife playerLife = this.GetComponent<PlayerLife>();
         if (playerLife != null)
         {
           playerLife.PowerUp();
