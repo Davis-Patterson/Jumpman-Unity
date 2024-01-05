@@ -55,6 +55,14 @@ public class PlayerLife : MonoBehaviour
     }
   }
 
+  private void OnTriggerEnter2D(Collider2D collider)
+  {
+    if (collider.gameObject.CompareTag("Trap") || collider.gameObject.CompareTag("Enemy"))
+    {
+      TakeDamage();
+    }
+  }
+
   public void TakeDamage()
   {
     if (isInvincible) return;
