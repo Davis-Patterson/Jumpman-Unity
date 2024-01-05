@@ -82,6 +82,12 @@ public class TurtleSpikes : MonoBehaviour
     }
   }
 
+  public bool IsDangerous()
+  {
+    return isDangerous;
+  }
+
+
   private IEnumerator DeactivateAfterDelay(float delay)
   {
     yield return new WaitForSeconds(delay);

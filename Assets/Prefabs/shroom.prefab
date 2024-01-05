@@ -445,6 +445,7 @@ MonoBehaviour:
   pointA: {fileID: 4431881207187088601}
   pointB: {fileID: 7108661283345416743}
   speed: 2.5
+  hitSpeed: 0
   pause: 1
   pauseDuration: 1
   towardsB: 0
@@ -470,7 +471,7 @@ Animator:
   m_GameObject: {fileID: 7041364820700292081}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e04c5f1a83f35a84db6258717866c908, type: 2}
+  m_Controller: {fileID: 9100000, guid: ae7197343b1beb845aeeb9d1f9c16b7f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
