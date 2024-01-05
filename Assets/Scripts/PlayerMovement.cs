@@ -126,15 +126,17 @@ public class PlayerMovement : MonoBehaviour
 
   private bool IsWalled()
   {
-    Vector2 startPosition = new Vector2(transform.position.x, transform.position.y) + (sprite.flipX ? Vector2.left : Vector2.right) * 0.1f; // Slight offset from the center
+    float scaleFactor = Mathf.Max(transform.localScale.x, transform.localScale.y);
+    Vector2 startPosition = new Vector2(transform.position.x, transform.position.y) + ((sprite.flipX ? Vector2.left : Vector2.right) * 0.1f * scaleFactor); // Adjusted for scale
     Vector2 direction = sprite.flipX ? Vector2.left : Vector2.right;
-    float rayLength = Mathf.Abs(wallCheckOffset.x);
+    float rayLength = Mathf.Abs(wallCheckOffset.x) * scaleFactor;
 
     RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, rayLength, wallLayer);
 
+    Debug.DrawRay(startPosition, direction * rayLength, Color.red);
+
     return hit.collider != null;
   }
-
 
   private void WallSlide()
   {
