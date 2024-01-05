@@ -18,7 +18,6 @@ public class PlayerLife : MonoBehaviour
 
   [SerializeField] private LivesCounter livesCounter;
   [SerializeField] private int HitPoints = 1;
-  [SerializeField] private bool isPoweredUp = false;
 
   private Vector3 originalScale;
 
@@ -28,17 +27,24 @@ public class PlayerLife : MonoBehaviour
   public AnimatorOverrideController playerPowerUp;
   private RuntimeAnimatorController originalAnimatorController;
 
-
+  private void Awake()
+  {
+    Debug.Log("Is Player Powered Up: " + Scoring.isPlayerPoweredUp);
+    anim = GetComponent<Animator>();
+    originalAnimatorController = anim.runtimeAnimatorController;
+    coll = GetComponent<BoxCollider2D>();
+    originalColliderSize = coll.size;
+    originalScale = transform.localScale;
+    if (Scoring.isPlayerPoweredUp)
+    {
+      RePowerUp();
+    }
+  }
 
   private void Start()
   {
     rb = GetComponent<Rigidbody2D>();
-    anim = GetComponent<Animator>();
     gm = GameObject.FindGameObjectWithTag("SpawnMaster").GetComponent<SpawnMaster>();
-    originalScale = transform.localScale;
-    originalAnimatorController = anim.runtimeAnimatorController;
-    coll = GetComponent<BoxCollider2D>();
-    originalColliderSize = coll.size;
 
     if (gm != null)
     {
@@ -90,6 +96,7 @@ public class PlayerLife : MonoBehaviour
 
   public void Die()
   {
+    Scoring.isPlayerPoweredUp = false;
     deathSoundEffect.Play();
     rb.bodyType = RigidbodyType2D.Static;
     anim.SetTrigger("death");
@@ -106,6 +113,10 @@ public class PlayerLife : MonoBehaviour
   {
     if (gm != null)
     {
+      if (Scoring.isPlayerPoweredUp)
+      {
+        PowerUp();
+      }
       transform.position = gm.lastCheckpointPos != Vector2.zero ? gm.lastCheckpointPos : gm.transform.position;
       rb.bodyType = RigidbodyType2D.Dynamic;
       spawnSoundEffect.Play();
@@ -115,13 +126,27 @@ public class PlayerLife : MonoBehaviour
 
   public void PowerUp()
   {
-    if (!isPoweredUp)
+    if (!Scoring.isPlayerPoweredUp)
     {
       powerUpSoundEffect.Play();
       anim.SetTrigger("hit");
       HitPoints = 2;
       StartCoroutine(ScaleOverTime(0.5f, 1f, originalColliderSize));
-      isPoweredUp = true;
+      Scoring.isPlayerPoweredUp = true;
+      anim.runtimeAnimatorController = playerPowerUp as RuntimeAnimatorController;
+    }
+  }
+
+  public void RePowerUp()
+  {
+    Debug.Log("RePowerUp called");
+    if (Scoring.isPlayerPoweredUp)
+    {
+      Debug.Log("anim: " + anim);
+      Debug.Log("playerPowerUp: " + playerPowerUp);
+
+      HitPoints = 2;
+      StartCoroutine(ScaleOverTime(0.1f, 1f, originalColliderSize));
       anim.runtimeAnimatorController = playerPowerUp as RuntimeAnimatorController;
     }
   }
@@ -129,7 +154,7 @@ public class PlayerLife : MonoBehaviour
   public void DeactivatePowerUp()
   {
     anim.runtimeAnimatorController = originalAnimatorController;
-    isPoweredUp = false;
+    Scoring.isPlayerPoweredUp = false;
   }
 
 

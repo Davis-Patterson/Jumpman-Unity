@@ -12,6 +12,7 @@ public class Scoring : MonoBehaviour
   public static int totalLevel;
   public static int totalLives = 5;
   public static int totalKills;
+  public static bool isPlayerPoweredUp = false;
 
   static Scoring()
   {
@@ -27,5 +28,6 @@ public class Scoring : MonoBehaviour
     totalLevel = 0;
     totalLives = 5;
     totalKills = 0;
+    isPlayerPoweredUp = false;
   }
 }
