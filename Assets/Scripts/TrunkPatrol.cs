@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ChamPatrol : MonoBehaviour
+public class TrunkPatrol : MonoBehaviour
 {
   public GameObject pointA;
   public GameObject pointB;
@@ -9,20 +9,12 @@ public class ChamPatrol : MonoBehaviour
   private Animator anim;
   private Transform currentPoint;
   public float speed;
-  public float hitSpeed;
-  private bool isHit = false;
-
   private bool isChangingDirection = false;
   public bool towardsB = false;
   private bool isPatrolPaused = false;
 
   public bool pause = false;
   public float pauseDuration = 2f;
-
-  public float tongueOutDuration = .05f;
-  public float tongueInDuration = .05f;
-
-  public ChamTongue chamTongue;
 
   void Start()
   {
@@ -41,34 +33,13 @@ public class ChamPatrol : MonoBehaviour
     }
   }
 
-  public void SetPatrolPaused(bool status)
-  {
-    isPatrolPaused = status;
-    if (isPatrolPaused)
-    {
-      rb.velocity = Vector2.zero;
-      anim.SetBool("isRunning", false);
-    }
-    else
-    {
-      anim.SetBool("isRunning", true);
-    }
-  }
-
   private void MoveTowardsCurrentPoint()
   {
     if (!isPatrolPaused)
     {
       Vector2 direction = (currentPoint.position - transform.position).normalized;
-      float currentSpeed = isHit ? hitSpeed : speed;
-      rb.velocity = direction * currentSpeed;
+      rb.velocity = direction * speed;
     }
-  }
-
-  public void OnHit()
-  {
-    isHit = true;
-    anim.SetTrigger("hit");
   }
 
   private void CheckIfPointReached()
@@ -94,7 +65,7 @@ public class ChamPatrol : MonoBehaviour
     anim.SetBool("isRunning", false);
     anim.SetTrigger("attack");
 
-    StartCoroutine(TongueAction());
+    GetComponent<TrunkShoot>().Shoot();
 
     yield return new WaitForSeconds(pauseDuration);
 
@@ -123,33 +94,6 @@ public class ChamPatrol : MonoBehaviour
       rb.velocity = new Vector2(0, rb.velocity.y);
     }
   }
-
-  public void TongueOut()
-  {
-    Debug.Log("Tongue Out Called");
-    if (chamTongue != null)
-    {
-      chamTongue.ActivateTongue(true);
-    }
-  }
-
-  public void TongueIn()
-  {
-    Debug.Log("Tongue In Called");
-    if (chamTongue != null)
-    {
-      chamTongue.ActivateTongue(false);
-    }
-  }
-
-  IEnumerator TongueAction()
-  {
-    yield return new WaitForSeconds(tongueOutDuration);
-    TongueOut();
-    yield return new WaitForSeconds(tongueInDuration);
-    TongueIn();
-  }
-
 
   private void OnDrawGizmos()
   {

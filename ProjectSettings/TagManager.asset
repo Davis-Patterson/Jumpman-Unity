@@ -74,6 +74,9 @@ TagManager:
   - name: Pipes
     uniqueID: 709456621
     locked: 0
+  - name: projectile
+    uniqueID: 3831444601
+    locked: 0
   - name: terrain
     uniqueID: 1017334331
     locked: 0
