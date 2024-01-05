@@ -112,7 +112,7 @@ public class PlayerLife : MonoBehaviour
       powerUpSoundEffect.Play();
       anim.SetTrigger("hit");
       HitPoints = 2;
-      StartCoroutine(ScaleOverTime(0.5f, 1.25f, originalColliderSize));
+      StartCoroutine(ScaleOverTime(0.5f, 1f, originalColliderSize));
       isPoweredUp = true;
       anim.runtimeAnimatorController = playerPowerUp as RuntimeAnimatorController;
     }
