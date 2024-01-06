@@ -23,6 +23,8 @@ public class PlayerLife : MonoBehaviour
 
   private float invincibilityDuration = 0.2f;
   private bool isInvincible = false;
+  private bool isRespawning = false;
+
 
   public AnimatorOverrideController playerPowerUp;
   private RuntimeAnimatorController originalAnimatorController;
@@ -71,7 +73,7 @@ public class PlayerLife : MonoBehaviour
 
   public void TakeDamage()
   {
-    if (isInvincible) return;
+    if (isInvincible || isRespawning) return;
 
     HitPoints--;
 
@@ -96,6 +98,9 @@ public class PlayerLife : MonoBehaviour
 
   public void Die()
   {
+    if (isRespawning) return;
+
+    isRespawning = true;
     Scoring.isPlayerPoweredUp = false;
     deathSoundEffect.Play();
     rb.bodyType = RigidbodyType2D.Static;
@@ -111,6 +116,7 @@ public class PlayerLife : MonoBehaviour
 
   private void Spawn()
   {
+    isRespawning = false;
     if (gm != null)
     {
       if (Scoring.isPlayerPoweredUp)

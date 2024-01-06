@@ -16,10 +16,13 @@ public class TrunkPatrol : MonoBehaviour
   public bool pause = false;
   public float pauseDuration = 2f;
 
+  private TrunkShoot trunkShoot;
+
   void Start()
   {
     rb = GetComponent<Rigidbody2D>();
     anim = GetComponent<Animator>();
+    trunkShoot = GetComponent<TrunkShoot>();
     currentPoint = towardsB ? pointB.transform : pointA.transform;
     anim.SetBool("isRunning", true);
   }
@@ -49,7 +52,7 @@ public class TrunkPatrol : MonoBehaviour
       isChangingDirection = true;
       if (pause)
       {
-        StartCoroutine(PauseBeforeFlip());
+        StartCoroutine(PauseAndShoot());
       }
       else
       {
@@ -93,6 +96,27 @@ public class TrunkPatrol : MonoBehaviour
       transform.localScale = localScale;
       rb.velocity = new Vector2(0, rb.velocity.y);
     }
+  }
+
+  private IEnumerator PauseAndShoot()
+  {
+    SetPatrolPaused(true);
+    anim.SetBool("isRunning", false);
+
+
+    yield return trunkShoot.Shoot();
+
+    flip();
+    ChangeDirection();
+
+    SetPatrolPaused(false);
+    anim.SetBool("isRunning", true);
+  }
+
+  public void SetPatrolPaused(bool state)
+  {
+    isPatrolPaused = state;
+    rb.velocity = Vector2.zero;
   }
 
   private void OnDrawGizmos()

@@ -16,6 +16,7 @@ TagManager:
   - MysteryBox
   - Strawberry
   - PlayerEnteringPipe
+  - Pineapple
   layers:
   - Default
   - TransparentFX
