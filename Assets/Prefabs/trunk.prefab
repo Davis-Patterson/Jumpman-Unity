@@ -519,7 +519,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1276438602046458341, guid: 62372dda9a9f56d4c9caabc7278e4274, type: 3}
   spawnPos: {fileID: 870417584329795087}
-  bulletDelay: 0.4
+  bulletDelay: 0.5
+  numberOfShots: 2
+  numberOfSequences: 1
+  fireRate: 0.6
+  initialDelay: 0.6
+  sequenceDelay: 1
+  shotSound: {fileID: 0}
 --- !u!114 &5375124785086747580
 MonoBehaviour:
   m_ObjectHideFlags: 0

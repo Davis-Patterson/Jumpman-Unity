@@ -15,7 +15,7 @@ public class ItemCollector : MonoBehaviour
 
   private void OnTriggerEnter2D(Collider2D collision)
   {
-    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon") || collision.gameObject.CompareTag("Strawberry"))
+    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon") || collision.gameObject.CompareTag("Strawberry") || collision.gameObject.CompareTag("Pineapple"))
     {
       TriggerCollectionAnimation(collision.gameObject);
       collectionSoundEffect.Play();
@@ -35,6 +35,18 @@ public class ItemCollector : MonoBehaviour
         TriggerCollectionAnimation(collision.gameObject);
         collectionSoundEffect.Play();
         scoreManager.AddStrawberries(1);
+
+        PlayerLife playerLife = this.GetComponent<PlayerLife>();
+        if (playerLife != null)
+        {
+          playerLife.PowerUp();
+        }
+      }
+      else if (collision.gameObject.CompareTag("Pineapple"))
+      {
+        TriggerCollectionAnimation(collision.gameObject);
+        collectionSoundEffect.Play();
+        scoreManager.AddPineapples(1);
 
         PlayerLife playerLife = this.GetComponent<PlayerLife>();
         if (playerLife != null)
