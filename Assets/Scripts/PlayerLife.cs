@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerLife : MonoBehaviour
 {
+  private PlayerPowerUp playerPowerUp;
   private Rigidbody2D rb;
-  private Animator anim;
+  public Animator anim;
   private SpawnMaster gm;
   private BoxCollider2D coll;
   private Vector2 originalColliderSize;
@@ -14,32 +15,26 @@ public class PlayerLife : MonoBehaviour
   [SerializeField] private AudioSource hitSoundEffect;
   [SerializeField] private AudioSource deathSoundEffect;
   [SerializeField] private AudioSource spawnSoundEffect;
-  [SerializeField] private AudioSource powerUpSoundEffect;
 
   [SerializeField] private LivesCounter livesCounter;
   [SerializeField] private int HitPoints = 1;
 
   private Vector3 originalScale;
 
-  private float invincibilityDuration = 0.2f;
-  private bool isInvincible = false;
   private bool isRespawning = false;
 
 
-  public AnimatorOverrideController playerPowerUp;
-  private RuntimeAnimatorController originalAnimatorController;
-
   private void Awake()
   {
-    Debug.Log("Is Player Powered Up: " + Scoring.isPlayerPoweredUp);
     anim = GetComponent<Animator>();
-    originalAnimatorController = anim.runtimeAnimatorController;
     coll = GetComponent<BoxCollider2D>();
     originalColliderSize = coll.size;
     originalScale = transform.localScale;
-    if (Scoring.isPlayerPoweredUp)
+    playerPowerUp = GetComponent<PlayerPowerUp>();
+
+    if (Scoring.currentPowerUpType != "")
     {
-      RePowerUp();
+      playerPowerUp.RePowerUp();
     }
   }
 
@@ -73,7 +68,7 @@ public class PlayerLife : MonoBehaviour
 
   public void TakeDamage()
   {
-    if (isInvincible || isRespawning) return;
+    if (isRespawning) return;
 
     HitPoints--;
 
@@ -89,11 +84,9 @@ public class PlayerLife : MonoBehaviour
         hitSoundEffect.Play();
         StartCoroutine(ScaleOverTime(0.5f, 1f, originalColliderSize));
         HitPoints = 1;
-        DeactivatePowerUp();
+        playerPowerUp.DeactivateAllPowerUps();
       }
     }
-
-    StartCoroutine(InvincibilityCooldown());
   }
 
   public void Die()
@@ -101,7 +94,7 @@ public class PlayerLife : MonoBehaviour
     if (isRespawning) return;
 
     isRespawning = true;
-    Scoring.isPlayerPoweredUp = false;
+    Scoring.currentPowerUpType = "";
     deathSoundEffect.Play();
     rb.bodyType = RigidbodyType2D.Static;
     anim.SetTrigger("death");
@@ -119,9 +112,9 @@ public class PlayerLife : MonoBehaviour
     isRespawning = false;
     if (gm != null)
     {
-      if (Scoring.isPlayerPoweredUp)
+      if (Scoring.currentPowerUpType != "")
       {
-        PowerUp();
+        playerPowerUp.RePowerUp();
       }
       transform.position = gm.lastCheckpointPos != Vector2.zero ? gm.lastCheckpointPos : gm.transform.position;
       rb.bodyType = RigidbodyType2D.Dynamic;
@@ -130,39 +123,10 @@ public class PlayerLife : MonoBehaviour
     }
   }
 
-  public void PowerUp()
+  public void ModifyHitPoints(int amount)
   {
-    if (!Scoring.isPlayerPoweredUp)
-    {
-      powerUpSoundEffect.Play();
-      anim.SetTrigger("hit");
-      HitPoints = 2;
-      StartCoroutine(ScaleOverTime(0.5f, 1f, originalColliderSize));
-      Scoring.isPlayerPoweredUp = true;
-      anim.runtimeAnimatorController = playerPowerUp as RuntimeAnimatorController;
-    }
+    HitPoints += amount;
   }
-
-  public void RePowerUp()
-  {
-    Debug.Log("RePowerUp called");
-    if (Scoring.isPlayerPoweredUp)
-    {
-      Debug.Log("anim: " + anim);
-      Debug.Log("playerPowerUp: " + playerPowerUp);
-
-      HitPoints = 2;
-      StartCoroutine(ScaleOverTime(0.1f, 1f, originalColliderSize));
-      anim.runtimeAnimatorController = playerPowerUp as RuntimeAnimatorController;
-    }
-  }
-
-  public void DeactivatePowerUp()
-  {
-    anim.runtimeAnimatorController = originalAnimatorController;
-    Scoring.isPlayerPoweredUp = false;
-  }
-
 
   private IEnumerator ScaleOverTime(float duration, float targetScaleFactor, Vector2 originalColliderSize)
   {
@@ -194,12 +158,5 @@ public class PlayerLife : MonoBehaviour
     transform.localScale = targetScaleVector;
     coll.size = originalColliderSize * targetScaleFactor;
     coll.offset = targetOffset;
-  }
-
-  private IEnumerator InvincibilityCooldown()
-  {
-    isInvincible = true;
-    yield return new WaitForSeconds(invincibilityDuration);
-    isInvincible = false;
   }
 }
