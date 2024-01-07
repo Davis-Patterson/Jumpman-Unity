@@ -17,6 +17,8 @@ TagManager:
   - Strawberry
   - PlayerEnteringPipe
   - Pineapple
+  - Banana
+  - Kiwi
   layers:
   - Default
   - TransparentFX

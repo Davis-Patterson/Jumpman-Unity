@@ -7,52 +7,49 @@ public class ItemCollector : MonoBehaviour
   [SerializeField] private AudioSource lifeSoundEffect;
 
   private ScoreManager scoreManager;
+  private PlayerPowerUp powerUpScript;
 
   private void Start()
   {
     scoreManager = FindObjectOfType<ScoreManager>();
+    powerUpScript = GetComponent<PlayerPowerUp>();
   }
 
   private void OnTriggerEnter2D(Collider2D collision)
   {
-    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon") || collision.gameObject.CompareTag("Strawberry") || collision.gameObject.CompareTag("Pineapple"))
+    if (collision.gameObject.CompareTag("Cherry") || collision.gameObject.CompareTag("Melon") ||
+        collision.gameObject.CompareTag("Strawberry") || collision.gameObject.CompareTag("Pineapple") ||
+        collision.gameObject.CompareTag("Kiwi") || collision.gameObject.CompareTag("Banana"))
     {
       TriggerCollectionAnimation(collision.gameObject);
       collectionSoundEffect.Play();
 
-      if (collision.gameObject.CompareTag("Cherry"))
+      switch (collision.gameObject.tag)
       {
-        scoreManager.AddCherries(1);
-      }
-      else if (collision.gameObject.CompareTag("Melon"))
-      {
-        StartCoroutine(PlayLifeSoundAfterDelay(0.12f));
-        scoreManager.AddMelons(1);
-        LivesCounter.AddLife(1);
-      }
-      else if (collision.gameObject.CompareTag("Strawberry"))
-      {
-        TriggerCollectionAnimation(collision.gameObject);
-        collectionSoundEffect.Play();
-        scoreManager.AddStrawberries(1);
-
-        PlayerLife playerLife = this.GetComponent<PlayerLife>();
-        if (playerLife != null)
-        {
-          playerLife.PowerUp();
-        }
-      }
-      else if (collision.gameObject.CompareTag("Pineapple"))
-      {
-        TriggerCollectionAnimation(collision.gameObject);
-        collectionSoundEffect.Play();
-        scoreManager.AddPineapples(1);
-
-        PlayerLife playerLife = this.GetComponent<PlayerLife>();
-        if (playerLife != null)
-        {
-          playerLife.PowerUp();
-        }
+        case "Cherry":
+          scoreManager.AddCherries(1);
+          break;
+        case "Melon":
+          StartCoroutine(PlayLifeSoundAfterDelay(0.12f));
+          scoreManager.AddMelons(1);
+          LivesCounter.AddLife(1);
+          break;
+        case "Strawberry":
+          scoreManager.AddStrawberries(1);
+          powerUpScript.PowerUp("Strawberry");
+          break;
+        case "Pineapple":
+          scoreManager.AddPineapples(1);
+          powerUpScript.PowerUp("Pineapple");
+          break;
+        case "Kiwi":
+          scoreManager.AddKiwis(1);
+          powerUpScript.PowerUp("Kiwi");
+          break;
+        case "Banana":
+          scoreManager.AddBananas(1);
+          powerUpScript.PowerUp("Banana");
+          break;
       }
       StartCoroutine(DeactivateAfterDelay(collision.gameObject, 1f));
     }

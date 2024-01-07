@@ -67,6 +67,24 @@ public class ScoreManager : MonoBehaviour
     EnqueueFloatingText("++", this.transform, 0.3f);
   }
 
+  public void AddKiwis(int kiwis)
+  {
+    collectionSoundEffect.Play();
+    Scoring.totalMelons += kiwis;
+    int points = kiwis * 500;
+    AddScore(points);
+    EnqueueFloatingText("++", this.transform, 0.3f);
+  }
+
+  public void AddBananas(int bananas)
+  {
+    collectionSoundEffect.Play();
+    Scoring.totalMelons += bananas;
+    int points = bananas * 500;
+    AddScore(points);
+    EnqueueFloatingText("++", this.transform, 0.3f);
+  }
+
   public void AddKills(int kills)
   {
     Scoring.totalKills += kills;
