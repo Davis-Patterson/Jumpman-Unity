@@ -45,6 +45,15 @@ public class PlayerPowerUp : MonoBehaviour
       return;
     }
 
+    if (isPineapple)
+    {
+      if (powerUpType != "Pineapple")
+      {
+        Scoring.currentPowerUpType = powerUpType;
+        return;
+      }
+    }
+
     powerUpSoundEffect.Play();
     anim.SetTrigger("hit_transition");
     if (powerUpType != "Pineapple")
@@ -151,7 +160,10 @@ public class PlayerPowerUp : MonoBehaviour
   private IEnumerator Pineapple()
   {
     isPineapple = true;
-    playerLife.BecomeInvincible();
+    if (isPineapple)
+    {
+      playerLife.BecomeInvincible();
+    }
 
     yield return new WaitForSeconds(10);
 

@@ -43,7 +43,7 @@ public class EnemyStomp : MonoBehaviour
 
       if (stompSoundEffect != null && hitCount <= requiredHits)
       {
-        stompSoundEffect.Play();
+        TriggerStompSound();
       }
 
       if (hitCount < requiredHits)
@@ -56,6 +56,11 @@ public class EnemyStomp : MonoBehaviour
         StartCoroutine(DeactivateAfterDelay(animationDelay));
       }
     }
+  }
+
+  public void TriggerStompSound()
+  {
+    stompSoundEffect.Play();
   }
 
   private IEnumerator DeactivateAfterDelay(float delay)
