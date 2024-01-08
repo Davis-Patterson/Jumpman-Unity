@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class StrawberryBullet : MonoBehaviour
 {
-  public float speed = 5f;
+  public float speed = 10f;
   public LayerMask collisionLayers;
+  public LayerMask groundLayers;
 
   private Rigidbody2D rb;
   private float direction;
+  private bool isBouncing = false;
+  private float bounceForce = 5f;
 
   void Awake()
   {
@@ -15,38 +18,24 @@ public class StrawberryBullet : MonoBehaviour
 
   public void Initialize(float newDirection)
   {
-    if (rb == null)
-    {
-      return;
-    }
-
     direction = newDirection;
-
-    if (direction > 0)
-    {
-      transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-    }
-    else
-    {
-      transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-    }
-
+    Debug.Log("Bullet direction: " + direction);
     Move();
   }
 
   private void Move()
   {
-    if (rb == null)
-    {
-      return;
-    }
-
     rb.velocity = new Vector2(speed * direction, 0);
   }
 
-  void OnTriggerEnter2D(Collider2D collision)
+  void Update()
   {
-    if (((1 << collision.gameObject.layer) & collisionLayers) != 0)
+    if (isBouncing)
+    {
+      rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+    }
+
+    if (Mathf.Approximately(rb.velocity.x, 0))
     {
       Destroy(gameObject);
     }
@@ -54,7 +43,12 @@ public class StrawberryBullet : MonoBehaviour
 
   void OnCollisionEnter2D(Collision2D collision)
   {
-    if (((1 << collision.gameObject.layer) & collisionLayers) != 0)
+    if (((1 << collision.gameObject.layer) & groundLayers) != 0)
+    {
+      rb.velocity = new Vector2(speed * direction, bounceForce);
+      isBouncing = true;
+    }
+    else if (((1 << collision.gameObject.layer) & collisionLayers) != 0)
     {
       Destroy(gameObject);
     }

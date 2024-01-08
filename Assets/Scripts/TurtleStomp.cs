@@ -47,7 +47,7 @@ public class TurtleStomp : MonoBehaviour
       scoreManager.AddKills(1);
       StartCoroutine(DeactivateAfterDelay(animationDelay));
     }
-    if (collision.gameObject.tag == "Invincible")
+    if (collision.gameObject.tag == "Invincible" || collision.gameObject.tag == "StrawberryBullet")
     {
       if (turtleAnimator != null)
       {

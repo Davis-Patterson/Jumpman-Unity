@@ -38,6 +38,13 @@ public class PlayerMovement : MonoBehaviour
 
   private bool disableHorizontalMovement = false;
 
+  private bool isFacingRight = true;
+
+  public bool IsFacingRight
+  {
+    get { return isFacingRight; }
+  }
+
 
   private void Start()
   {
@@ -195,12 +202,14 @@ public class PlayerMovement : MonoBehaviour
     }
     else if (dirX > 0f)
     {
+      isFacingRight = true;
       state = MovementState.running;
       sprite.flipX = false;
       wallCheck.localPosition = new Vector3(Mathf.Abs(wallCheckOffset.x), wallCheckOffset.y, 0);
     }
     else if (dirX < 0f)
     {
+      isFacingRight = false;
       state = MovementState.running;
       sprite.flipX = true;
       wallCheck.localPosition = new Vector3(-Mathf.Abs(wallCheckOffset.x), wallCheckOffset.y, 0);

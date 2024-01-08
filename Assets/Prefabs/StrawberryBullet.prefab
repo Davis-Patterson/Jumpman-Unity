@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3809023485992754092}
   - component: {fileID: 4078576935210883695}
   - component: {fileID: 5919847015761337900}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: StrawberryBullet
-  m_TagString: Enemy
+  m_TagString: StrawberryBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -463522695
-  m_SortingLayer: -2
+  m_SortingLayerID: -1857449941
+  m_SortingLayer: -6
   m_SortingOrder: 0
   m_Sprite: {fileID: 1775669009216684005, guid: a2c110585eb710b408972fbc3b96136d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -103,18 +103,18 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3809023485992754092
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,7 +147,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02765429, y: -0.061109573}
+  m_Offset: {x: 0.027653992, y: -0.08504926}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -158,7 +158,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5604434, y: 0.5983836}
+  m_Size: {x: 0.67748, y: 0.65690196}
   m_EdgeRadius: 0
 --- !u!68 &4078576935210883695
 EdgeCollider2D:
@@ -175,7 +175,7 @@ EdgeCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -223,7 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a0cb1c2072f5c489c185e92b5b885d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   collisionLayers:
     serializedVersion: 2
-    m_Bits: 832
+    m_Bits: 6912
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 1088
