@@ -10,6 +10,8 @@ public class TurtleStomp : MonoBehaviour
   [SerializeField] private AudioSource stompSoundEffect;
   private ScoreManager scoreManager;
   private TurtleSpikes parentTurtleSpikes;
+  private EnemyStomp enemyStomp;
+
 
   private void Start()
   {
@@ -43,6 +45,17 @@ public class TurtleStomp : MonoBehaviour
       }
 
       scoreManager.AddKills(1);
+      StartCoroutine(DeactivateAfterDelay(animationDelay));
+    }
+    if (collision.gameObject.tag == "Invincible")
+    {
+      if (turtleAnimator != null)
+      {
+        turtleAnimator.SetTrigger("hit");
+      }
+
+      enemyStomp.TriggerStompSound();
+
       StartCoroutine(DeactivateAfterDelay(animationDelay));
     }
   }
