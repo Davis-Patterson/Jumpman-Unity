@@ -31,10 +31,7 @@ public class BulletStomp : MonoBehaviour
       {
         scoreManager.AddScore(100);
       }
-      else
-      {
-        Debug.LogWarning("ScoreManager not found in the scene.");
-      }
+
 
       if (stompSoundEffect != null)
       {

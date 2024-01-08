@@ -19,6 +19,7 @@ TagManager:
   - Pineapple
   - Banana
   - Kiwi
+  - Trunk
   layers:
   - Default
   - TransparentFX
@@ -32,7 +33,7 @@ TagManager:
   - Turtle
   - MysteryBox
   - Fruit
-  - 
+  - Trunk
   - 
   - 
   - 

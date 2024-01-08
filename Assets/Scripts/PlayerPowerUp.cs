@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerPowerUp : MonoBehaviour
@@ -11,8 +12,7 @@ public class PlayerPowerUp : MonoBehaviour
   private Animator anim;
   private RuntimeAnimatorController originalAnimatorController;
 
-  private string previousPowerUpType = "";
-
+  private bool isPineapple;
   private bool hasStrawberryPower = false;
 
   public AnimatorOverrideController playerStrawberry;
@@ -37,58 +37,88 @@ public class PlayerPowerUp : MonoBehaviour
 
   public void PowerUp(string powerUpType)
   {
-    DeactivateAllPowerUps();
-    if (Scoring.currentPowerUpType != "Pineapple")
-    {
-      previousPowerUpType = Scoring.currentPowerUpType;
-      powerUpSoundEffect.Play();
-      anim.SetTrigger("hit");
-      playerLife.ModifyHitPoints(1);
-      if (powerUpType != "Pineapple")
-      {
-        Scoring.currentPowerUpType = powerUpType;
-      }
+    if (powerUpType == Scoring.currentPowerUpType) return;
 
-      switch (powerUpType)
-      {
-        case "Strawberry":
-          playerLife.anim.runtimeAnimatorController = playerStrawberry;
-          StrawberryPowerUp();
-          break;
-        case "Kiwi":
-          playerLife.anim.runtimeAnimatorController = playerKiwiUp;
-          KiwiPowerUp();
-          break;
-        case "Banana":
-          playerLife.anim.runtimeAnimatorController = playerBananaUp;
-          break;
-      }
+    if (powerUpType == "None")
+    {
+      DeactivateAllPowerUps();
+      return;
+    }
+
+    powerUpSoundEffect.Play();
+    anim.SetTrigger("hit_transition");
+    if (powerUpType != "Pineapple")
+    {
+      Scoring.currentPowerUpType = powerUpType;
+    }
+
+    switch (powerUpType)
+    {
+      case "Strawberry":
+        playerLife.anim.runtimeAnimatorController = playerStrawberry;
+        StrawberryPowerUp();
+        break;
+      case "Kiwi":
+        playerLife.anim.runtimeAnimatorController = playerKiwiUp;
+        KiwiPowerUp();
+        break;
+      case "Banana":
+        playerLife.anim.runtimeAnimatorController = playerBananaUp;
+        break;
+      case "Pineapple":
+        playerLife.anim.runtimeAnimatorController = playerPineapple;
+        PineapplePowerUp();
+        break;
     }
   }
 
-  public void RePowerUpPrevious()
+  public void RePowerUp(string powerUpType)
   {
-    if (previousPowerUpType != "")
-    {
-      PowerUp(previousPowerUpType);
-    }
-    else
+    if (powerUpType == "None")
     {
       DeactivateAllPowerUps();
+      return;
+    }
+
+    switch (powerUpType)
+    {
+      case "Strawberry":
+        playerLife.anim.runtimeAnimatorController = playerStrawberry;
+        StrawberryPowerUp();
+        break;
+      case "Kiwi":
+        playerLife.anim.runtimeAnimatorController = playerKiwiUp;
+        KiwiPowerUp();
+        break;
+      case "Banana":
+        playerLife.anim.runtimeAnimatorController = playerBananaUp;
+        break;
     }
   }
 
-  public void RePowerUp()
+  public void RevertPineapple(string powerUpType)
   {
-    string powerUpType = previousPowerUpType != "" ? previousPowerUpType : Scoring.currentPowerUpType;
-    if (powerUpType != "" && anim != null)
-    {
-      PowerUp(powerUpType);
-      playerLife.ModifyHitPoints(1);
-    }
-    else
+    if (powerUpType == "None")
     {
       DeactivateAllPowerUps();
+      return;
+    }
+
+    anim.SetTrigger("hit_transition");
+
+    switch (powerUpType)
+    {
+      case "Strawberry":
+        playerLife.anim.runtimeAnimatorController = playerStrawberry;
+        StrawberryPowerUp();
+        break;
+      case "Kiwi":
+        playerLife.anim.runtimeAnimatorController = playerKiwiUp;
+        KiwiPowerUp();
+        break;
+      case "Banana":
+        playerLife.anim.runtimeAnimatorController = playerBananaUp;
+        break;
     }
   }
 
@@ -96,22 +126,38 @@ public class PlayerPowerUp : MonoBehaviour
   {
     if (anim != null)
     {
+      Scoring.currentPowerUpType = "None";
       hasStrawberryPower = false;
       anim.runtimeAnimatorController = originalAnimatorController;
-      Scoring.currentPowerUpType = "";
-      previousPowerUpType = "";
     }
   }
+
 
   private void StrawberryPowerUp()
   {
     hasStrawberryPower = true;
-    playerLife.ModifyHitPoints(1);
   }
 
   private void KiwiPowerUp()
   {
     return;
+  }
+
+  private void PineapplePowerUp()
+  {
+    StartCoroutine(Pineapple());
+  }
+
+  private IEnumerator Pineapple()
+  {
+    isPineapple = true;
+    playerLife.BecomeInvincible();
+
+    yield return new WaitForSeconds(10);
+
+    isPineapple = false;
+    playerLife.BecomeVulnerable();
+    RevertPineapple(Scoring.currentPowerUpType);
   }
 
   public void ShootStrawberry()

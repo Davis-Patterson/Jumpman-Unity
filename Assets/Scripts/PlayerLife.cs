@@ -17,11 +17,11 @@ public class PlayerLife : MonoBehaviour
   [SerializeField] private AudioSource spawnSoundEffect;
 
   [SerializeField] private LivesCounter livesCounter;
-  [SerializeField] private int HitPoints = 1;
 
   private Vector3 originalScale;
 
   private bool isRespawning = false;
+  private bool isInvincible = false;
 
 
   private void Awake()
@@ -31,11 +31,6 @@ public class PlayerLife : MonoBehaviour
     originalColliderSize = coll.size;
     originalScale = transform.localScale;
     playerPowerUp = GetComponent<PlayerPowerUp>();
-
-    if (Scoring.currentPowerUpType != "")
-    {
-      playerPowerUp.RePowerUp();
-    }
   }
 
   private void Start()
@@ -48,6 +43,8 @@ public class PlayerLife : MonoBehaviour
       Vector2 startPosition = gm.lastCheckpointPos != Vector2.zero ? gm.lastCheckpointPos : gm.transform.position;
       transform.position = startPosition;
     }
+
+    playerPowerUp.RePowerUp(Scoring.currentPowerUpType);
   }
 
   private void OnCollisionEnter2D(Collision2D collision)
@@ -60,7 +57,7 @@ public class PlayerLife : MonoBehaviour
 
   private void OnTriggerEnter2D(Collider2D collider)
   {
-    if (collider.gameObject.CompareTag("Trap") || collider.gameObject.CompareTag("Enemy"))
+    if (collider.gameObject.CompareTag("Trap") || collider.gameObject.CompareTag("Enemy") || collider.gameObject.CompareTag("Trunk"))
     {
       TakeDamage();
     }
@@ -68,54 +65,56 @@ public class PlayerLife : MonoBehaviour
 
   public void TakeDamage()
   {
-    if (isRespawning) return;
+    if (isRespawning || isInvincible) return;
 
-    HitPoints--;
-
-    if (HitPoints <= 0)
+    if (Scoring.currentPowerUpType != "None")
     {
-      Die();
-    }
-    else
-    {
+      playerPowerUp.DeactivateAllPowerUps();
       anim.SetTrigger("hit");
       if (hitSoundEffect != null)
       {
         hitSoundEffect.Play();
         StartCoroutine(ScaleOverTime(0.5f, 1f, originalColliderSize));
-        HitPoints = 1;
-        playerPowerUp.DeactivateAllPowerUps();
       }
+    }
+    else
+    {
+      Die();
     }
   }
 
   public void Die()
   {
-    if (isRespawning) return;
+    if (isRespawning || isInvincible) return;
 
     isRespawning = true;
-    Scoring.currentPowerUpType = "";
+    Scoring.currentPowerUpType = "None";
     deathSoundEffect.Play();
     rb.bodyType = RigidbodyType2D.Static;
     anim.SetTrigger("death");
 
+    StartCoroutine(DisableCollidersAfterAnimation(0.25f));
+
     LivesCounter.RemoveLife(1);
+
     if (Scoring.totalLives > 0)
     {
-      Invoke("Spawn", 2f);
+      Invoke("Spawn", 1.75f);
     }
-    HitPoints = 1;
   }
 
   private void Spawn()
   {
     isRespawning = false;
+
+    foreach (var collider in GetComponents<Collider2D>())
+    {
+      collider.enabled = true;
+    }
+
     if (gm != null)
     {
-      if (Scoring.currentPowerUpType != "")
-      {
-        playerPowerUp.RePowerUp();
-      }
+      playerPowerUp.RePowerUp(Scoring.currentPowerUpType);
       transform.position = gm.lastCheckpointPos != Vector2.zero ? gm.lastCheckpointPos : gm.transform.position;
       rb.bodyType = RigidbodyType2D.Dynamic;
       spawnSoundEffect.Play();
@@ -123,9 +122,14 @@ public class PlayerLife : MonoBehaviour
     }
   }
 
-  public void ModifyHitPoints(int amount)
+  public void BecomeInvincible()
   {
-    HitPoints += amount;
+    isInvincible = true;
+  }
+
+  public void BecomeVulnerable()
+  {
+    isInvincible = false;
   }
 
   private IEnumerator ScaleOverTime(float duration, float targetScaleFactor, Vector2 originalColliderSize)
@@ -158,5 +162,15 @@ public class PlayerLife : MonoBehaviour
     transform.localScale = targetScaleVector;
     coll.size = originalColliderSize * targetScaleFactor;
     coll.offset = targetOffset;
+  }
+
+  private IEnumerator DisableCollidersAfterAnimation(float delay)
+  {
+    yield return new WaitForSeconds(delay);
+
+    foreach (var collider in GetComponents<Collider2D>())
+    {
+      collider.enabled = false;
+    }
   }
 }
