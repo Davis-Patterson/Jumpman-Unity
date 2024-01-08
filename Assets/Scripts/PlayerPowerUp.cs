@@ -16,7 +16,7 @@ public class PlayerPowerUp : MonoBehaviour
 
   private bool isPineapple;
   private bool hasStrawberryPower = false;
-  private float strawberryCooldown = .5f;
+  private float strawberryCooldown = 0.2f;
   private float timeSinceLastShot = 0f;
 
   public AnimatorOverrideController playerStrawberry;

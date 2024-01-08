@@ -35,7 +35,7 @@ public class StrawberryBullet : MonoBehaviour
       rb.velocity = new Vector2(speed * direction, rb.velocity.y);
     }
 
-    if (Mathf.Approximately(rb.velocity.x, 0))
+    if (Mathf.Abs(rb.velocity.x) < 0.1f)
     {
       Destroy(gameObject);
     }
