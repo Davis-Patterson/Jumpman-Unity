@@ -20,6 +20,7 @@ TagManager:
   - Banana
   - Kiwi
   - Trunk
+  - StrawberryBullet
   layers:
   - Default
   - TransparentFX
@@ -34,7 +35,7 @@ TagManager:
   - MysteryBox
   - Fruit
   - Trunk
-  - 
+  - Projectile
   - 
   - 
   - 
@@ -68,6 +69,9 @@ TagManager:
     locked: 0
   - name: Fruit
     uniqueID: 3970567125
+    locked: 0
+  - name: playerProjectile
+    uniqueID: 2437517355
     locked: 0
   - name: Player
     uniqueID: 363344769

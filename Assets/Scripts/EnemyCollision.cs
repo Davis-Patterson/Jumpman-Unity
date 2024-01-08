@@ -11,6 +11,7 @@ public class EnemyCollision : MonoBehaviour
   private void Start()
   {
     npcAnimator = GetComponentInParent<Animator>();
+    enemyStomp = GetComponentInParent<EnemyStomp>();
   }
 
   private void OnCollisionEnter2D(Collision2D collision)
@@ -28,15 +29,28 @@ public class EnemyCollision : MonoBehaviour
     }
     if (collision.gameObject.tag == "Invincible")
     {
-      if (npcAnimator != null)
-      {
-        npcAnimator.SetTrigger("hit");
-      }
-
-      enemyStomp.TriggerStompSound();
-
-      StartCoroutine(DeactivateAfterDelay(animationDelay));
+      HandleEnemyHit();
     }
+    if (collision.gameObject.tag == "StrawberryBullet")
+    {
+      HandleEnemyHit();
+    }
+  }
+
+  private void HandleEnemyHit()
+  {
+    Debug.Log("Enemy Hit");
+    if (npcAnimator != null)
+    {
+      npcAnimator.SetTrigger("hit");
+    }
+
+    if (enemyStomp != null)
+    {
+      enemyStomp.TriggerStompSound();
+    }
+
+    StartCoroutine(DeactivateAfterDelay(animationDelay));
   }
 
   private IEnumerator DeactivateAfterDelay(float delay)

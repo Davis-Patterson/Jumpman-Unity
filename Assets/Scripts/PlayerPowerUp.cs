@@ -7,13 +7,17 @@ public class PlayerPowerUp : MonoBehaviour
   [SerializeField] private Transform spawnPoint;
 
   [SerializeField] private AudioSource powerUpSoundEffect;
+  [SerializeField] private AudioSource strawberryShootSoundEffect;
 
   private PlayerLife playerLife;
+  private PlayerMovement playerMovement;
   private Animator anim;
   private RuntimeAnimatorController originalAnimatorController;
 
   private bool isPineapple;
   private bool hasStrawberryPower = false;
+  private float strawberryCooldown = .5f;
+  private float timeSinceLastShot = 0f;
 
   public AnimatorOverrideController playerStrawberry;
   public AnimatorOverrideController playerPineapple;
@@ -23,16 +27,21 @@ public class PlayerPowerUp : MonoBehaviour
   void Start()
   {
     playerLife = GetComponent<PlayerLife>();
+    playerMovement = GetComponent<PlayerMovement>();
     anim = GetComponent<Animator>();
     originalAnimatorController = anim.runtimeAnimatorController;
   }
 
   void Update()
   {
-    if (hasStrawberryPower && Input.GetButtonDown("Fire"))
+    if (hasStrawberryPower && Input.GetButtonDown("Fire1") && timeSinceLastShot >= strawberryCooldown)
     {
       ShootStrawberry();
+      timeSinceLastShot = 0f;
     }
+
+
+    timeSinceLastShot += Time.deltaTime;
   }
 
   public void PowerUp(string powerUpType)
@@ -174,9 +183,17 @@ public class PlayerPowerUp : MonoBehaviour
 
   public void ShootStrawberry()
   {
-    if (strawberryBulletPrefab && spawnPoint && hasStrawberryPower)
+    if (strawberryBulletPrefab && spawnPoint && hasStrawberryPower && timeSinceLastShot >= strawberryCooldown)
     {
-      Instantiate(strawberryBulletPrefab, spawnPoint.position, Quaternion.identity);
+      anim.SetTrigger("hit_transition");
+      GameObject bullet = Instantiate(strawberryBulletPrefab, spawnPoint.position, Quaternion.identity);
+
+      float direction = playerMovement.IsFacingRight ? 1f : -1f;
+      bullet.GetComponent<StrawberryBullet>().Initialize(direction);
+      strawberryShootSoundEffect.Play();
+
+      timeSinceLastShot = 0f;
     }
   }
+
 }
