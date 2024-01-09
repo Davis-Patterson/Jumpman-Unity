@@ -62,7 +62,7 @@ public class ScoreManager : MonoBehaviour
   {
     collectionSoundEffect.Play();
     Scoring.totalMelons += pineapples;
-    int points = pineapples * 500;
+    int points = pineapples * 1000;
     AddScore(points);
     EnqueueFloatingText("++", this.transform, 0.3f);
   }

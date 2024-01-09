@@ -5,6 +5,7 @@ public class Pineapple : MonoBehaviour, IMovable
 {
   [SerializeField] private float moveSpeed = 5f;
   [SerializeField] private bool movesRight;
+  [SerializeField] private bool isHovering = false;
 
   private Rigidbody2D rb;
   private float moveDirection;
@@ -19,7 +20,10 @@ public class Pineapple : MonoBehaviour, IMovable
     rb = GetComponent<Rigidbody2D>();
     rb.gravityScale = 0;
     moveDirection = movesRight ? 1f : -1f;
-    StartCoroutine(EnableMovementAfterDelay(1f));
+    if (!isHovering)
+    {
+      StartCoroutine(EnableMovementAfterDelay(1f));
+    }
   }
 
   public void SetInitialDirection(bool movesRight)
