@@ -389,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: selectedRewardType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5049765999057615832, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: m_Name
@@ -86152,6 +86152,7 @@ SceneRoots:
   - {fileID: 2019350601}
   - {fileID: 224553297}
   - {fileID: 2138195489}
+  - {fileID: 1231252640}
   - {fileID: 623610898}
   - {fileID: 660783173}
   - {fileID: 489283048}
@@ -86161,4 +86162,3 @@ SceneRoots:
   - {fileID: 123412611}
   - {fileID: 969828656}
   - {fileID: 1773944258}
-  - {fileID: 1231252640}

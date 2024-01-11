@@ -2183,12 +2183,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
+      propertyPath: maxHits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: rewardMovesRight
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: selectedRewardType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5049765999057615832, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: m_Name
