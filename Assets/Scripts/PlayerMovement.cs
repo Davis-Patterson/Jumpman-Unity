@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
   private float dirX = 0f;
   [SerializeField] private float moveSpeed = 7f;
   [SerializeField] private float jumpForce = 14f;
+  [SerializeField] private float doubleJumpForce = 12f;
+  [SerializeField] private float powerUpDoubleJumpForce = 14f;
 
   [SerializeField] private float gravityScale = 3f;
 
@@ -115,8 +117,9 @@ public class PlayerMovement : MonoBehaviour
 
   private void DoubleJump()
   {
+    float jumpForceToUse = Scoring.currentPowerUpType != "None" ? powerUpDoubleJumpForce : doubleJumpForce;
     doubleJumpSoundEffect.Play();
-    rb.velocity = new Vector2(rb.velocity.x, jumpForce / 1.2f);
+    rb.velocity = new Vector2(rb.velocity.x, jumpForceToUse);
     canDoubleJump = false;
     SetMovementState(MovementState.doublejump);
   }
