@@ -67700,7 +67700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: selectedRewardType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5049765999057615832, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: m_Name
@@ -68273,6 +68273,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
+      propertyPath: maxHits
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 521243248953847630, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
+      propertyPath: selectedRewardType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5049765999057615832, guid: 2e4aa4ee794ba034fb2d1091c99648f4, type: 3}
       propertyPath: m_Name
       value: MysteryBox (1)

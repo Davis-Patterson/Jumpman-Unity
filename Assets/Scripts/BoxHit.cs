@@ -11,7 +11,7 @@ public class BoxHit : MonoBehaviour
   [SerializeField] private GameObject[] rewards;
   [SerializeField] private float spawnHeight = 2f;
   [SerializeField] private float spawnAnimationDuration = 1f;
-  public enum RewardType { Cherry, Melon, Strawberry, Banana, Kiwi }
+  public enum RewardType { Cherry, Melon, Strawberry, Banana, Kiwi, Pineapple }
   [SerializeField] private RewardType selectedRewardType;
   [SerializeField] private bool rewardMovesRight = false;
 
