@@ -182,6 +182,8 @@ MonoBehaviour:
   - {fileID: 5101933016150454148, guid: d375300408004e544a1c2125033969db, type: 3}
   - {fileID: 8347213519632296115, guid: 0480b0cde885e384997da67f26005157, type: 3}
   - {fileID: 8667203885428984518, guid: ea698d6bfee3b514d9aad69c5b77ae17, type: 3}
+  - {fileID: 134492006294080764, guid: 57311749bd041324cbca3a3178163492, type: 3}
+  - {fileID: 3319197748168378681, guid: 9e0c0eb7459b8424399dbf97d4ca5711, type: 3}
   spawnHeight: 2
   spawnAnimationDuration: 0.8
   selectedRewardType: 0
